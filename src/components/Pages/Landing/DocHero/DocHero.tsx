@@ -1,41 +1,67 @@
-import styles from "./LandingHero.module.css";
+import Link from "@docusaurus/Link";
+import cn from "classnames";
+import styles from "./DocHero.module.css";
 
 interface GetStartedLink {
   title: string;
   description: string;
   href: string;
-  icon: any;
+  icon?: any;
 }
 
-interface LandingHeroProps {
+interface CtaLink {
+  title: string;
+  href: string;
+  variant?: "primary" | "secondary";
+  arrow?: boolean;
+}
+
+interface DocHeroProps {
   title: string;
   image?: any;
   youtubeVideoId?: string;
-  linksTitle?: string;
-  linksColumnCount?: number;
   links?: GetStartedLink[];
+  linksDesktopColumnCount?: number;
+  ctaLinks?: CtaLink[];
   children?: React.ReactNode;
 }
 
-const LandingHero: React.FC<LandingHeroProps> = ({
+const DocHero: React.FC<DocHeroProps> = ({
   title,
   image,
   youtubeVideoId,
-  linksTitle,
-  linksColumnCount = 2,
   links = [],
+  ctaLinks = [],
+  linksDesktopColumnCount = 2,
   children,
 }) => {
   const getEmbedYouTubeUrl = (videoId: string) => {
     return `https://www.youtube.com/embed/${videoId}`;
   };
+
   return (
-    <section className={styles.landingHero}>
+    <section className={styles.docHero}>
       <div className={styles.container}>
         <div className={styles.main}>
           <div className={styles.content}>
-            <h1 className={styles.title}>{title}</h1>
+            <h2 className={styles.title}>{title}</h2>
             <div className={styles.description}>{children}</div>
+            {ctaLinks.length > 0 && (
+              <div className={styles.ctaLinks}>
+                {ctaLinks.map((link, i) => (
+                  <Link
+                    key={i}
+                    to={link.href}
+                    className={cn(styles.ctaLink, {
+                      [styles.secondary]: link.variant === "secondary",
+                      [styles.arrow]: link.arrow,
+                    })}
+                  >
+                    {link.title}
+                  </Link>
+                ))}
+              </div>
+            )}
           </div>
           <div className={styles.media}>
             {image && !youtubeVideoId && (
@@ -60,24 +86,21 @@ const LandingHero: React.FC<LandingHeroProps> = ({
             )}
           </div>
         </div>
-        {linksTitle && links.length > 0 && (
-          <h2 className={styles.linksTitle}>{linksTitle}</h2>
-        )}
         {links.length > 0 && (
           <div
             className={styles.links}
             style={
               {
-                "--desktop-column-count": linksColumnCount,
+                "--desktop-column-count": linksDesktopColumnCount,
               } as React.CSSProperties
             }
           >
             {links.map((link, i) => (
               <a href={link.href} key={i} className={styles.link}>
                 <div className={styles.linkContent}>
-                  <h3 className={styles.linkTitle}>{link.title}</h3>
+                  <h4 className={styles.linkTitle}>{link.title}</h4>
                   <p className={styles.linkDescription}>{link.description}</p>
-                  <link.icon className={styles.linkIcon} />
+                  {link.icon && <link.icon className={styles.linkIcon} />}
                 </div>
               </a>
             ))}
@@ -88,4 +111,4 @@ const LandingHero: React.FC<LandingHeroProps> = ({
   );
 };
 
-export default LandingHero;
+export default DocHero;
