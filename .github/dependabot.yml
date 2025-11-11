@@ -40,7 +40,20 @@ updates:
       docusaurus:
         patterns:
           - "@docusaurus/*"
+      inkeep:
+        patterns:
+          - "@inkeep/*"
+      postcss:
+        patterns:
+          - "*postcss*"
       npm-web-dependencies:
+        # Catch-all for minor/patch Web deps, but explicitly exclude Docusaurus
+        patterns:
+          - "*"
+        exclude-patterns:
+          - "@docusaurus/*"
+          - "@inkeep/*"
+          - "*postcss*"
         update-types:
           - "minor"
           - "patch"
