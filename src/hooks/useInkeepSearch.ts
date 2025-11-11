@@ -71,7 +71,7 @@ export function useInkeepSearch(options: UseInkeepSearchOptions = {}) {
     },
     transformSource: (source: SourceItem) => {
       const { url, tabs } = source;
-      if (url && (url.includes('youtube.com') || url.includes('goteleport.com/resources/videos'))) {
+      if (url && (url.startsWith('https://www.youtube.com') || url.includes('goteleport.com/resources/videos'))) {
         return {
           ...source,
           tabs: ['Videos', ...(source.tabs ?? [])],
